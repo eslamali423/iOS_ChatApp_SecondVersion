@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -17,6 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
+        
+        handelAuthentcation()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -51,7 +54,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     
-  
+    //MARK:- Handel Auto Login
+    private func handelAuthentcation(){
+   
+        if Auth.auth().currentUser == nil {
+            //   self.tabBarController?.tabBar.isHidden = true
+           // set it on a main Queue
+            DispatchQueue.main.async {
+                self.goToLoginViewController()
+            }
+            
+        }
+    }
+   
+    //MARK:- Navigation To Login View Controller
+    func goToLoginViewController()  {
+        let loginVC = UIStoryboard (name: "Main", bundle: nil).instantiateViewController(identifier: "LoginViewController") as! LoginViewController
+
+        loginVC.modalPresentationStyle = .fullScreen
+        
+        self.window?.rootViewController = loginVC
+      //  present(loginVC, animated: false, completion: nil)
+    }
 
 
 }

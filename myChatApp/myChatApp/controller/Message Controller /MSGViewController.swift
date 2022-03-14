@@ -53,6 +53,7 @@ class MSGViewController: MessagesViewController {
         configureMessageCollectionView()
         configureMessageInputBar()
         loadMessages()
+        listenForNewMessages()
         
         
         // Do any additional setup after loading the view.
@@ -135,9 +136,14 @@ class MSGViewController: MessagesViewController {
         let pridecate = NSPredicate(format: "chatRoomId = %@", chatId)
         allLocalMessages = realm.objects(LocalMessage.self).filter(pridecate).sorted(byKeyPath: KDATE, ascending: true)
         
-
-        // OBserve(Listenr) To Firebase using Notification Token
+        // get old messages first
+        if allLocalMessages.isEmpty {
+            checkForOldMessages()
+        }
         
+        
+        
+        // OBserve(Listenr) To Firebase using Notification Token
         notificationToken = allLocalMessages.observe({ (change  : RealmCollectionChange ) in
             switch change {
             case .initial:
@@ -160,13 +166,14 @@ class MSGViewController: MessagesViewController {
     }
     
     
-    
+    // insert one Message
     private func insertMKMessage(localMessage : LocalMessage){
         let incoming = Incoming(messageViewController: self)
         let mkMessage = incoming.createMKMessage(localMessage: localMessage)
         mkMessages.append(mkMessage)
     }
     
+    // insert All Message
     private func insertMKMessages(){
         
         for localMessage in allLocalMessages {
@@ -174,6 +181,25 @@ class MSGViewController: MessagesViewController {
         }
         
     }
+    
+    //check for Old Messages if locall messages is empty
+    func checkForOldMessages() {
+        MessageManager.shared.checkForOldMessages(documentId: User.currentID, collectionId: chatId)
+    }
+    
+    // listen to new message
+    private func listenForNewMessages () {
+        MessageManager.shared.listenForNewMessage(documentId: User.currentID, collectionId: chatId, lastMesageDate: lastMessageDate())
+    }
+    
+    // get last message Data function to use it in ListenForNewMessages()
+    private func lastMessageDate()->Date {
+        let lastMessageDate = allLocalMessages.last?.date ?? Date()
+        
+        return Calendar.current.date(byAdding: .second, value: 1 ,to: lastMessageDate) ?? lastMessageDate
+    }
+    
+    
     
     
 }

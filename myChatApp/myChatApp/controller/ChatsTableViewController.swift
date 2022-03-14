@@ -23,7 +23,7 @@ class ChatsTableViewController: UITableViewController {
         tableView.tableFooterView = UIView()
         
         title = "Chats"
-         handelAuthentcation()
+      //   handelAuthentcation()
         
         
         //configure searchBar
@@ -101,22 +101,22 @@ class ChatsTableViewController: UITableViewController {
     }
     
     
-    //MARK:- Handel Auto Login
-    private func handelAuthentcation(){
-        
-        //      let loggedIn = UserDefaults.standard.bool(forKey: "currentUser")
-        
-        if Auth.auth().currentUser == nil {
-            //   self.tabBarController?.tabBar.isHidden = true
-            goToLoginViewController()
-            //     navigationController?.pushViewController(loginVC, animated: false)
-        }
-    }
-    func goToLoginViewController()  {
-        let loginVC = storyboard?.instantiateViewController(identifier: "LoginViewController") as! LoginViewController
-        loginVC.modalPresentationStyle = .fullScreen
-        present(loginVC, animated: false, completion: nil)
-    }
+//    //MARK:- Handel Auto Login
+//    private func handelAuthentcation(){
+//        
+//        //      let loggedIn = UserDefaults.standard.bool(forKey: "currentUser")
+//        
+//        if Auth.auth().currentUser == nil {
+//            //   self.tabBarController?.tabBar.isHidden = true
+//            goToLoginViewController()
+//            //     navigationController?.pushViewController(loginVC, animated: false)
+//        }
+//    }
+//    func goToLoginViewController()  {
+//        let loginVC = storyboard?.instantiateViewController(identifier: "LoginViewController") as! LoginViewController
+//        loginVC.modalPresentationStyle = .fullScreen
+//        present(loginVC, animated: false, completion: nil)
+//    }
     
     
     //MARK:- Download All ChatRooms
