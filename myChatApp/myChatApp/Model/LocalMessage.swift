@@ -28,9 +28,11 @@ class LocalMessage : Object, Codable {
  @objc dynamic var pictureUrl = ""
  @objc dynamic var locationLatitude = 0.0
  @objc dynamic var locationLongitude = 0.0
+
+    override class func primaryKey() -> String{
+        return "id"
+    }
     
 }
 
-func primaryKey() -> String{
-    return "id"
-}
+

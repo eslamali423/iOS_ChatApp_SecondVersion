@@ -23,7 +23,7 @@ class ChatsTableViewController: UITableViewController {
         tableView.tableFooterView = UIView()
         
         title = "Chats"
-        // handelAuthentcation()
+         handelAuthentcation()
         
         
         //configure searchBar

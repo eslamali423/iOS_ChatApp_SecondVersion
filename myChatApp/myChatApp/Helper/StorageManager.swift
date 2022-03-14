@@ -13,6 +13,7 @@ import ProgressHUD
 
 class StorageManager  {
     
+    
     static let shared =  StorageManager()
     let storageRefDirectory = "gs://mychatapp-40cf2.appspot.com/"
     

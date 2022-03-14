@@ -13,9 +13,12 @@ extension MSGViewController : InputBarAccessoryViewDelegate {
     func inputBar(_ inputBar: InputBarAccessoryView, textViewTextDidChangeTo text: String) {
        print("typing")
     }
-    
+    // Did Tap Send Button
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
-        print (text)
+        
+        send(text: text, photo: nil, video: nil, audio: nil, location: nil)
+        
+        
         inputBar.inputTextView.text = ""
         messageInputBar.invalidatePlugins()
         

@@ -23,7 +23,11 @@ class MSGViewController: MessagesViewController {
     let micButton  = InputBarButtonItem()
     
     let currentUser = MKSender(senderId : User.currentID , displayName : User.currentUser!.username)
-    let mkMessage : [MKMessage] = [] 
+    var mkMessages : [MKMessage] = []
+    var allLocalMessages : Results<LocalMessage>!
+    let realm = try! Realm()
+    
+    var notificationToken : NotificationToken?
     
     
     //MARK:- Initializer
@@ -48,6 +52,7 @@ class MSGViewController: MessagesViewController {
         
         configureMessageCollectionView()
         configureMessageInputBar()
+        loadMessages()
         
         
         // Do any additional setup after loading the view.
@@ -118,6 +123,57 @@ class MSGViewController: MessagesViewController {
         
     }
     
+    //MARK:- Send Message Function
+    func send(text : String?, photo : UIImage?, video : Video?, audio : String? , location : String?, audioDuration: Float = 0.0)  {
+        
+        Outgoing.shared.sendMessage(chatId: chatId, text: text, photo: photo, video: video, audio: audio, location: location, memberIds: [User.currentID, receiverId])
+        
+    }
+    
+    //MARK:- Load Messages
+    func loadMessages()  {
+        let pridecate = NSPredicate(format: "chatRoomId = %@", chatId)
+        allLocalMessages = realm.objects(LocalMessage.self).filter(pridecate).sorted(byKeyPath: KDATE, ascending: true)
+        
+
+        // OBserve(Listenr) To Firebase using Notification Token
+        
+        notificationToken = allLocalMessages.observe({ (change  : RealmCollectionChange ) in
+            switch change {
+            case .initial:
+                self.insertMKMessages()
+                self.messagesCollectionView.reloadData()
+                self.messagesCollectionView.scrollToBottom(animated: true)
+  
+            case .update(_, _, insertions: let insertions, _):
+                for index in insertions {
+                    self.insertMKMessage(localMessage: self.allLocalMessages[index])
+                    self.messagesCollectionView.reloadData()
+                    self.messagesCollectionView.scrollToBottom(animated: true)
+                }
+            case .error(let error):
+                print("error", error.localizedDescription)
+            }
+        })
+        
+        
+    }
+    
+    
+    
+    private func insertMKMessage(localMessage : LocalMessage){
+        let incoming = Incoming(messageViewController: self)
+        let mkMessage = incoming.createMKMessage(localMessage: localMessage)
+        mkMessages.append(mkMessage)
+    }
+    
+    private func insertMKMessages(){
+        
+        for localMessage in allLocalMessages {
+            insertMKMessage(localMessage: localMessage)
+        }
+        
+    }
     
     
 }
