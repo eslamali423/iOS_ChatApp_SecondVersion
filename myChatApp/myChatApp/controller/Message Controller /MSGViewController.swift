@@ -67,7 +67,7 @@ class MSGViewController: MessagesViewController {
                 messagesCollectionView.messagesLayoutDelegate = self
         
         
-        scrollsToBottomOnKeyboardBeginsEditing = true
+        scrollsToLastItemOnKeyboardBeginsEditing = true
         maintainPositionOnKeyboardFrameChanged = true
         messagesCollectionView.refreshControl = refreshController
         
