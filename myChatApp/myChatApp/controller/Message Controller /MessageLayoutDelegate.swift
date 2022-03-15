@@ -29,12 +29,18 @@ extension MSGViewController : MessagesLayoutDelegate {
         return isFromCurrentSender(message: message) && indexPath.section == mkMessages.count - 1 ? 17 : 0
         
     }
-    
+    // this function to set height for time and status for every message
     public func messageBottomLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
   
         return indexPath.section != mkMessages.count - 1 ? 10 : 0
    
     }
+    
+    // this fucntion to set the first letter from username in the avatar
+    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+        avatarView.set(avatar: Avatar(image: nil, initials: mkMessages[indexPath.section].senderInitials))
+    }
+    
     
     
     // i write this function here because isFormCurrentSender doesn't exist here
