@@ -108,10 +108,10 @@ class MSGViewController: MessagesViewController {
         
        
         // update mic status
-        updateMicButtonStatus(show : false)
+   
     }
     
-    private func updateMicButtonStatus (show : Bool) {
+     func updateMicButtonStatus (show : Bool) {
         if show  /* mic  */{
             messageInputBar.setStackViewItems([micButton], forStack: .right, animated: false)
             messageInputBar.setRightStackViewWidthConstant(to: 36, animated: false)
