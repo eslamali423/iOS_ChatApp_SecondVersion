@@ -12,6 +12,10 @@ extension MSGViewController : InputBarAccessoryViewDelegate {
     
     func inputBar(_ inputBar: InputBarAccessoryView, textViewTextDidChangeTo text: String) {
        print("typing")
+      // this for mic or send buttom
+        // if true -> no text mic shows up, if false -> textView has text send button shows up
+        updateMicButtonStatus(show : text == "" )
+
     }
     // Did Tap Send Button
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
