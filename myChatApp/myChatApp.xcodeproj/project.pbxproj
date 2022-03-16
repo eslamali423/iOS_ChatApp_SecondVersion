@@ -46,6 +46,8 @@
 		28E2F70427E2449000641CB5 /* VideoMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E2F70327E2449000641CB5 /* VideoMessage.swift */; };
 		28E2F70727E258D200641CB5 /* LocationMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E2F70627E258D200641CB5 /* LocationMessage.swift */; };
 		28E2F70A27E25C3200641CB5 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E2F70927E25C3200641CB5 /* LocationManager.swift */; };
+		28E2F70D27E2625800641CB5 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E2F70C27E2625800641CB5 /* MapViewController.swift */; };
+		28E2F71227E2664900641CB5 /* MapAnnontation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E2F71127E2664900641CB5 /* MapAnnontation.swift */; };
 		28F90CC427DA95380090CAF4 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F90CC327DA95380090CAF4 /* Global.swift */; };
 		28FFE95F27DAAC4B00124780 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281B190A27DA812700B64A6E /* StorageManager.swift */; };
 		28FFE96227DAAD9F00124780 /* UsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FFE96127DAAD9F00124780 /* UsersViewController.swift */; };
@@ -96,6 +98,8 @@
 		28E2F70327E2449000641CB5 /* VideoMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoMessage.swift; sourceTree = "<group>"; };
 		28E2F70627E258D200641CB5 /* LocationMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMessage.swift; sourceTree = "<group>"; };
 		28E2F70927E25C3200641CB5 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		28E2F70C27E2625800641CB5 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		28E2F71127E2664900641CB5 /* MapAnnontation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnontation.swift; sourceTree = "<group>"; };
 		28F90CC327DA95380090CAF4 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		28FFE96127DAAD9F00124780 /* UsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersViewController.swift; sourceTree = "<group>"; };
 		28FFE96427DAAF6900124780 /* UsersTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersTableViewCell.swift; sourceTree = "<group>"; };
@@ -136,6 +140,7 @@
 				284BBF3227DE5D030087A0E7 /* MessageDisplayDelegate.swift */,
 				284BBF3527DE5D2B0087A0E7 /* MessageLayoutDelegate.swift */,
 				284BBF3827DE5D690087A0E7 /* InputBarAccessoryViewDelegate.swift */,
+				28E2F70C27E2625800641CB5 /* MapViewController.swift */,
 			);
 			path = "Message Controller ";
 			sourceTree = "<group>";
@@ -237,6 +242,7 @@
 				284920A027E21C9200694B6B /* PhotoMessage.swift */,
 				28E2F70327E2449000641CB5 /* VideoMessage.swift */,
 				28E2F70627E258D200641CB5 /* LocationMessage.swift */,
+				28E2F71127E2664900641CB5 /* MapAnnontation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -383,11 +389,13 @@
 				284BBF3027DE5CCC0087A0E7 /* MessageCellDelegate.swift in Sources */,
 				284BBFE527DF781D0087A0E7 /* Outgoing.swift in Sources */,
 				287FB4FA27D648D200FA7D6C /* myChatApp.xcdatamodeld in Sources */,
+				28E2F71227E2664900641CB5 /* MapAnnontation.swift in Sources */,
 				287FB4F027D648D200FA7D6C /* AppDelegate.swift in Sources */,
 				28FFE96227DAAD9F00124780 /* UsersViewController.swift in Sources */,
 				28897B3C27D7906800C7AA8A /* Helper.swift in Sources */,
 				2859D3A227D6808B00F1C3CE /* LoginViewController.swift in Sources */,
 				28D4597427D8E284000CF90E /* SettingsTableViewController.swift in Sources */,
+				28E2F70D27E2625800641CB5 /* MapViewController.swift in Sources */,
 				28897B4027D791D600C7AA8A /* User.swift in Sources */,
 				28897B4427D794C800C7AA8A /* UserManager.swift in Sources */,
 				284BBFE227DF73840087A0E7 /* MessageManager.swift in Sources */,

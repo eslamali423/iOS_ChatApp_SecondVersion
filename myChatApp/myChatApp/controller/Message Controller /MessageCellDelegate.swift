@@ -44,19 +44,24 @@ extension MSGViewController : MessageCellDelegate {
                 self.present(playerController, animated: true) {
                     playerController.player!.play()
                 }
-                
-                
-                
-                
-                
+          
             }
-            
-            
-        
+  
         }
     }
     
-    
+    func didTapMessage(in cell: MessageCollectionViewCell) {
+        if let indexPath = messagesCollectionView.indexPath(for: cell) {
+        let mkMessage = mkMessages[indexPath.section]
+ 
+            if mkMessage.locationItem != nil {
+                let mapVC = MapViewController()
+                mapVC.location = mkMessage.locationItem?.location
+                navigationController?.pushViewController(mapVC, animated: true)
+            }
+        
+        }
+    }
     
 }
 

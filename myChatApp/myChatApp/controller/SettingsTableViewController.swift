@@ -26,6 +26,7 @@ class SettingsTableViewController: UITableViewController {
         // to hide Empty cells in the tableview
         tableView.tableFooterView = UIView()
         self.tabBarController?.tabBar.isHidden = false
+        getUserInfo()
 
         
     }
@@ -37,7 +38,7 @@ class SettingsTableViewController: UITableViewController {
         profilePictureImageView.layer.cornerRadius = profilePictureImageView.frame.width / 2
         
         
-        getUserInfo()
+       // getUserInfo()
     }
     
     
