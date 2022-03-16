@@ -7,6 +7,7 @@
 
 import Foundation
 import MessageKit
+import CoreLocation
 
 struct MKMessage :  MessageType {
    
@@ -23,6 +24,7 @@ struct MKMessage :  MessageType {
     
     var videoItem  : VideoMessage?
     
+    var locationItem :LocationMessage?
     
     var status : String
     var readDate : Date
@@ -39,15 +41,21 @@ struct MKMessage :  MessageType {
         
         switch message.type {
         case KTEXT:
-            MessageKind.text(message.message)
+            self.kind = MessageKind.text(message.message)
         case KPHOTO:
             let photoItem = PhotoMessage  (path: message.pictureUrl)
             self.kind = MessageKind.photo(photoItem)
             self.photoItem = photoItem
+      
         case KVIDEO:
             let videoItem = VideoMessage  (url: nil)
             self.kind = MessageKind.video(videoItem)
             self.videoItem  = videoItem
+     
+        case KLOCATION:
+            let locationItem = LocationMessage(location: CLLocation(latitude: message.locationLatitude, longitude: message.locationLongitude))
+            self.kind = MessageKind.location(locationItem)
+            self.locationItem    = locationItem
         default:
             print("Unkonwn Error ")
         }

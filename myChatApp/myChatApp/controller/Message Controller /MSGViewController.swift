@@ -106,7 +106,11 @@ class MSGViewController: MessagesViewController {
             )        }
         
         let location = UIAlertAction(title: "Share Location", style: .default) { (action) in
-            print("Location")
+            
+            if let _ = LocationManager.shared.currentLocation {
+                self.send(text: nil, photo: nil, video: nil, audio: nil, location: KLOCATION)
+
+            }
         }
         location.setValue(UIImage(systemName: "mappin.and.ellipse"), forKey: "image")
         let cancel = UIAlertAction(title: "Cancel", style: .destructive) { (action) in
