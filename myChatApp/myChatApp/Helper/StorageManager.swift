@@ -17,7 +17,7 @@ class StorageManager  {
     static let shared =  StorageManager()
     let storageRefDirectory = "gs://mychatapp-40cf2.appspot.com/"
     
-    //MARK:- Upload Images to Firebase
+    //MARK:- Upload Images to Firestore
     func uploadImgage(image : UIImage, directory : String, completion : @escaping ( _ downloadedLink : String?)-> Void)  {
         // create folder in firestore
         let storageRef = Storage.storage().reference(forURL: storageRefDirectory).child(directory)
@@ -85,7 +85,8 @@ class StorageManager  {
                 downloadQueue.async {
                     let data =  NSData(contentsOf: downloadUrl!)
                     if data != nil {
-                        // save file locally in the video ????
+                        // save the file locally 
+                        StorageManager.shared.saveFileLocally(fileData: data!, fileName: imageFileName)
                         DispatchQueue.main.async {
                             completion(UIImage(data: data! as Data))
                         }
@@ -95,6 +96,45 @@ class StorageManager  {
             
         }
     }
+    
+    
+    
+    //MARK:- Upload Videos to Firestore
+    func uploadVideo(video  : NSData, directory : String, completion : @escaping ( _ videoLink : String?)-> Void)  {
+      
+        // create folder in firestore
+        let storageRef = Storage.storage().reference(forURL: storageRefDirectory).child(directory)
+        
+        // put data into firestore and return the downloaded link
+        var task : StorageUploadTask!
+        task = storageRef.putData(video as Data, metadata: nil, completion: { (data, error) in
+            task.removeAllObservers()
+            ProgressHUD.dismiss()
+   
+            if error != nil {
+                print("Error Uploading Video .....")
+                print (error?.localizedDescription)
+                
+                return
+            }
+            storageRef.downloadURL { (url, error) in
+                guard let downloadUrl =  url , error == nil else  {
+                    print (error?.localizedDescription)
+                    completion(nil)
+                    return
+                }
+                completion(downloadUrl.absoluteString)
+                
+            }
+        })
+        
+        //observe upload persantage
+        task.observe(StorageTaskStatus.progress) { (snapshot) in
+            // to get the persantage % for uploading progress
+            let progress =  snapshot.progress!.completedUnitCount / snapshot.progress!.totalUnitCount
+            ProgressHUD.showProgress(CGFloat(progress))
+        }
+    }// func uploadImage
     
 } // class storageManager
 

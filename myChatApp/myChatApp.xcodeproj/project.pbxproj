@@ -43,6 +43,7 @@
 		28897B4427D794C800C7AA8A /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28897B4327D794C800C7AA8A /* UserManager.swift */; };
 		28D4597427D8E284000CF90E /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D4597327D8E284000CF90E /* SettingsTableViewController.swift */; };
 		28D4597B27D94F23000CF90E /* EditProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D4597A27D94F23000CF90E /* EditProfileTableViewController.swift */; };
+		28E2F70427E2449000641CB5 /* VideoMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E2F70327E2449000641CB5 /* VideoMessage.swift */; };
 		28F90CC427DA95380090CAF4 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F90CC327DA95380090CAF4 /* Global.swift */; };
 		28FFE95F27DAAC4B00124780 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281B190A27DA812700B64A6E /* StorageManager.swift */; };
 		28FFE96227DAAD9F00124780 /* UsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FFE96127DAAD9F00124780 /* UsersViewController.swift */; };
@@ -90,6 +91,7 @@
 		28897B4327D794C800C7AA8A /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		28D4597327D8E284000CF90E /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		28D4597A27D94F23000CF90E /* EditProfileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewController.swift; sourceTree = "<group>"; };
+		28E2F70327E2449000641CB5 /* VideoMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoMessage.swift; sourceTree = "<group>"; };
 		28F90CC327DA95380090CAF4 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		28FFE96127DAAD9F00124780 /* UsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersViewController.swift; sourceTree = "<group>"; };
 		28FFE96427DAAF6900124780 /* UsersTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersTableViewCell.swift; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 				284BBF4427DE6B5A0087A0E7 /* MKSender.swift */,
 				284BBF4727DE6CF20087A0E7 /* MKMessage.swift */,
 				284920A027E21C9200694B6B /* PhotoMessage.swift */,
+				28E2F70327E2449000641CB5 /* VideoMessage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -388,6 +391,7 @@
 				284BBF2527DDE0A90087A0E7 /* MSGViewController.swift in Sources */,
 				28D4597B27D94F23000CF90E /* EditProfileTableViewController.swift in Sources */,
 				284BBF3327DE5D030087A0E7 /* MessageDisplayDelegate.swift in Sources */,
+				28E2F70427E2449000641CB5 /* VideoMessage.swift in Sources */,
 				284BBF1827DCE1620087A0E7 /* ContainerViewController.swift in Sources */,
 				284BBF3D27DE6B140087A0E7 /* LocalMessage.swift in Sources */,
 				28FFE95F27DAAC4B00124780 /* StorageManager.swift in Sources */,
