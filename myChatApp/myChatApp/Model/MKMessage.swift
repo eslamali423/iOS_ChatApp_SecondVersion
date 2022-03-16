@@ -8,7 +8,7 @@
 import Foundation
 import MessageKit
 
-struct MKMessage : MessageType {
+struct MKMessage :  MessageType {
    
     var messageId: String
     var kind: MessageKind
@@ -17,10 +17,15 @@ struct MKMessage : MessageType {
     var sender: SenderType {
         return mkSender
     }
+    
     var senderInitials : String //  if user does'nt have avatar put fist letter form his name
+    var photoItem  : PhotoMessage?
+    
     var status : String
     var readDate : Date
     var incoming : Bool
+    
+    
     
     
     init( message : LocalMessage){
@@ -28,10 +33,25 @@ struct MKMessage : MessageType {
         self.mkSender = MKSender(senderId: message.senderId, displayName: message.senderName)
         self.status =  message.status
         self.kind = MessageKind.text(message.message)
+        
+        switch message.type {
+        case KTEXT:
+            MessageKind.text(message.message)
+        case KPHOTO:
+            let photoItem = PhotoMessage  (path: message.pictureUrl)
+            self.kind = MessageKind.photo(photoItem)
+            self.photoItem = photoItem
+        default:
+            print("Unkonwn Error ")
+        }
+        
+        
         self.senderInitials = message.senderInitials
         self.sentDate = message.date
         self.readDate = message.readDate
         self.incoming = User.currentID != mkSender.senderId
+        
+        
     }
     
     

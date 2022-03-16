@@ -370,7 +370,16 @@ class MSGViewController: MessagesViewController {
 extension MSGViewController : GalleryControllerDelegate {
     func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
         
-        // TODO:- send photo Image 
+        // TODO:- send photo Image
+        if images.count > 0 {
+            images.first?.resolve(completion: { (image) in
+                self.send(text: nil, photo: image, video: nil, audio: nil, location: nil)
+
+            })
+        }
+        
+        
+        
         
         controller.dismiss(animated: true, completion: nil)
     }

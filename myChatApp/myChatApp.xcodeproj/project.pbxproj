@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		284920A127E21C9200694B6B /* PhotoMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284920A027E21C9200694B6B /* PhotoMessage.swift */; };
 		284AA11A27DC31EB006489C3 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284AA11927DC31EB006489C3 /* ProfileTableViewController.swift */; };
 		284BBF0C27DCC3C70087A0E7 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284BBF0B27DCC3C70087A0E7 /* ChatRoom.swift */; };
 		284BBF0F27DCC5960087A0E7 /* ChatsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284BBF0E27DCC5960087A0E7 /* ChatsTableViewController.swift */; };
@@ -51,6 +52,7 @@
 
 /* Begin PBXFileReference section */
 		281B190A27DA812700B64A6E /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		284920A027E21C9200694B6B /* PhotoMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoMessage.swift; sourceTree = "<group>"; };
 		284AA11927DC31EB006489C3 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
 		284BBF0B27DCC3C70087A0E7 /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
 		284BBF0E27DCC5960087A0E7 /* ChatsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsTableViewController.swift; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 				284BBF3C27DE6B140087A0E7 /* LocalMessage.swift */,
 				284BBF4427DE6B5A0087A0E7 /* MKSender.swift */,
 				284BBF4727DE6CF20087A0E7 /* MKMessage.swift */,
+				284920A027E21C9200694B6B /* PhotoMessage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -393,6 +396,7 @@
 				284BBFDF27DF73760087A0E7 /* RealmManager.swift in Sources */,
 				284BBF1F27DD99F30087A0E7 /* StartChat.swift in Sources */,
 				284BBF1227DCCA7B0087A0E7 /* ChatTableViewCell.swift in Sources */,
+				284920A127E21C9200694B6B /* PhotoMessage.swift in Sources */,
 				287FB4F227D648D200FA7D6C /* SceneDelegate.swift in Sources */,
 				28F90CC427DA95380090CAF4 /* Global.swift in Sources */,
 				284BBF4827DE6CF20087A0E7 /* MKMessage.swift in Sources */,
