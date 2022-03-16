@@ -33,6 +33,7 @@ class MSGViewController: MessagesViewController {
     var maxMessageNumber = 0
     var minMessageNumber = 0
     
+    var gallery : GalleryController!
     
     //MARK:- Initializer
     
@@ -97,12 +98,12 @@ class MSGViewController: MessagesViewController {
         let ActionSheet =  UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         let camera = UIAlertAction(title: "Open Camera", style: .default) { (action) in
-            print("Camera")
-        }
+
+            self.configureGalleryController(camera: true)        }
         
         let cameraRoll =  UIAlertAction(title: "Share From Camera Roll", style: .default) { (action) in
-            print("Camera Roll")
-        }
+            self.configureGalleryController(camera: false
+            )        }
         
         let location = UIAlertAction(title: "Share Location", style: .default) { (action) in
             print("Location")
@@ -126,6 +127,13 @@ class MSGViewController: MessagesViewController {
         self.present(ActionSheet, animated: true, completion: nil)
         
     }
+    
+
+    
+    
+
+    
+    
     
     
     //MARK:- Conficration for Message Collection View Function
@@ -340,5 +348,53 @@ class MSGViewController: MessagesViewController {
         
         return Calendar.current.date(byAdding: .second, value: 1 ,to: lastMessageDate) ?? lastMessageDate
     }
+    
+    //MARK:- Callery Function
+    
+    private func configureGalleryController(camera : Bool) {
+        gallery = GalleryController()
+        gallery.delegate = self
+        Config.tabsToShow =  camera ? [.cameraTab] : [.imageTab , .videoTab]
+        Config.Camera.imageLimit = 1
+        Config.initialTab = .imageTab
+        Config.VideoEditor.maximumDuration = 30
+        
+        self.present(gallery, animated: true, completion: nil)
+        
+    }
+    
+    
 
 }
+
+extension MSGViewController : GalleryControllerDelegate {
+    func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
+        
+        // TODO:- send photo Image 
+        
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func galleryController(_ controller: GalleryController, didSelectVideo video: Video) {
+        
+        
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func galleryController(_ controller: GalleryController, requestLightbox images: [Image]) {
+        
+        
+        
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func galleryControllerDidCancel(_ controller: GalleryController) {
+       
+        
+        
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    
+}
+
