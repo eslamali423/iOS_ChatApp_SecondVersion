@@ -16,6 +16,9 @@ extension MSGViewController : MessagesLayoutDelegate {
         
         if indexPath.section % 3 == 0 {
             // set height for pull for new messages label
+            if indexPath.section == 0 && allLocalMessages.count > displayingMessageCount{
+                return 40
+            }
         }
    return 10
     }
