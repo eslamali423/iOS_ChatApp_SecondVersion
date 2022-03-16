@@ -58,6 +58,7 @@ class MSGViewController: MessagesViewController {
         configureMessageInputBar()
         loadMessages()
         listenForNewMessages()
+        listenForReadStatusUpdate()
         self.title = receiverName
        // self.title = "Anonymous"
         self.navigationController?.navigationBar.prefersLargeTitles = false
@@ -81,7 +82,49 @@ class MSGViewController: MessagesViewController {
     
     @objc func didTapBackButton(){
         MessageManager.shared.removeListner()
+        ChatRoomManager.shared.clearUnreadCounterWithId(chatRoomId: chatId)
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    
+    
+    //MARK:- Did Tap Attacth Message Button
+    
+    func didTapAttatchButton()  {
+        // to hide the keyboard
+        messageInputBar.inputTextView.resignFirstResponder()
+        
+        let ActionSheet =  UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let camera = UIAlertAction(title: "Open Camera", style: .default) { (action) in
+            print("Camera")
+        }
+        
+        let cameraRoll =  UIAlertAction(title: "Share From Camera Roll", style: .default) { (action) in
+            print("Camera Roll")
+        }
+        
+        let location = UIAlertAction(title: "Share Location", style: .default) { (action) in
+            print("Location")
+        }
+        location.setValue(UIImage(systemName: "mappin.and.ellipse"), forKey: "image")
+        let cancel = UIAlertAction(title: "Cancel", style: .destructive) { (action) in
+            self.dismiss(animated: true, completion: nil)
+        }
+        
+        camera.setValue(UIImage(systemName: "camera"), forKey: "image")
+        cameraRoll.setValue(UIImage(systemName: "photo.fill.on.rectangle.fill"), forKey: "image")
+        location.setValue(UIImage(systemName: "location"), forKey: "image")
+
+        
+        
+        ActionSheet.addAction(camera)
+        ActionSheet.addAction(cameraRoll)
+        ActionSheet.addAction(location)
+        ActionSheet.addAction(cancel)
+        
+        self.present(ActionSheet, animated: true, completion: nil)
+        
     }
     
     
@@ -115,7 +158,7 @@ class MSGViewController: MessagesViewController {
         attachButton.setSize(CGSize(width: 30, height: 30), animated: false)
         attachButton.onTouchUpInside { (item) in
             print("attach button pressed")
-            //attach action
+            self.didTapAttatchButton()
             
         }
         
@@ -173,12 +216,14 @@ class MSGViewController: MessagesViewController {
                 self.insertMKMessages()
                 self.messagesCollectionView.reloadData()
                 self.messagesCollectionView.scrollToLastItem(animated: true)
+                self.messagesCollectionView.scrollToBottom(animated: false)
   
             case .update(_, _, insertions: let insertions, _):
                 for index in insertions {
                     self.insertMKMessage(localMessage: self.allLocalMessages[index])
                     self.messagesCollectionView.reloadData()
                     self.messagesCollectionView.scrollToLastItem(animated: true)
+                    self.messagesCollectionView.scrollToBottom(animated: false)
                 }
             case .error(let error):
                 print("error", error.localizedDescription)
@@ -188,9 +233,40 @@ class MSGViewController: MessagesViewController {
         
     }
     
+    //MARK:- Set Message Status As Read To The Receiver (Firestore)
+    func markMessageAsRead(localMessage : LocalMessage)  {
+        if localMessage.senderId != User.currentID {
+            MessageManager.shared.updataMessageStatus(message: localMessage, userId: receiverId)
+        }
+    }
+    
+    //MARK:- Update Read Status In Messages View Controller
+    func updateReadStatus(updatedLocalMessage : LocalMessage)  {
+        for index in 0 ..< mkMessages.count {
+            let tempMessage = mkMessages[index]
+            if updatedLocalMessage.id == tempMessage.messageId {
+                mkMessages[index].status = updatedLocalMessage.status
+                mkMessages[index].readDate = updatedLocalMessage.readDate
+            // save the updated Message locally
+                RealmManager.shared.save(updatedLocalMessage)
+            }
+            if mkMessages[index].status == KREAD {
+                self.messagesCollectionView.reloadData()
+            }
+            
+        }
+    }
+    
+    func listenForReadStatusUpdate()  {
+        MessageManager.shared.listenForReadStatus(documentId: User.currentID, collectionId: chatId) { (updatedLocalMessage) in
+            self.updateReadStatus(updatedLocalMessage: updatedLocalMessage)
+        }
+    }
+    
     
     // insert one Message
     private func insertMKMessage(localMessage : LocalMessage){
+        self.markMessageAsRead(localMessage: localMessage)
         let incoming = Incoming(messageViewController: self)
         let mkMessage = incoming.createMKMessage(localMessage: localMessage)
         mkMessages.append(mkMessage)
