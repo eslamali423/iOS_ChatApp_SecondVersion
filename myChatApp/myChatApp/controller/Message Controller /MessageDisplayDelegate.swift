@@ -29,8 +29,7 @@ extension MSGViewController : MessagesDisplayDelegate {
    // this message set the tail style for every message
     func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
         let tail : MessageStyle.TailCorner = isFromCurrentSender(message: message) ? .bottomRight : .bottomLeft
-    
-    
+
         return .bubbleTail(tail, .curved)
     }
     

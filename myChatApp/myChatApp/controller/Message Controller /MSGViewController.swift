@@ -29,6 +29,10 @@ class MSGViewController: MessagesViewController {
     
     var notificationToken : NotificationToken?
     
+    var displayingMessageCount = 0
+    var maxMessageNumber = 0
+    var minMessageNumber = 0
+    
     
     //MARK:- Initializer
     
@@ -54,10 +58,32 @@ class MSGViewController: MessagesViewController {
         configureMessageInputBar()
         loadMessages()
         listenForNewMessages()
+        self.title = receiverName
+       // self.title = "Anonymous"
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         
-        
+        configureBackButton()
+  
         // Do any additional setup after loading the view.
+        
     }
+    //MARK:- Configure Back Button in Messages View Controller
+    // to do remove Listner
+    func configureBackButton(){
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        button.setTitle(" Chats", for: .normal)
+        button.sizeToFit()
+        button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+        //(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(didTapBackButton))
+    }
+    
+    @objc func didTapBackButton(){
+        MessageManager.shared.removeListner()
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     
     //MARK:- Conficration for Message Collection View Function
     private func configureMessageCollectionView () {
@@ -96,11 +122,7 @@ class MSGViewController: MessagesViewController {
         // add items to messageInputBar stalkView
         messageInputBar.setStackViewItems([attachButton], forStack: .left, animated: false)
         messageInputBar.setLeftStackViewWidthConstant(to: 36, animated: false)
-        
-        
-       
-        
-        
+   
         micButton.image = UIImage(systemName: "mic.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
         micButton.setSize(CGSize(width: 30, height: 30), animated: false)
         
@@ -108,9 +130,11 @@ class MSGViewController: MessagesViewController {
         
        
         // update mic status
-   
+        // true at first because textView doesn't has text (mic shows up)
+        updateMicButtonStatus(show : true)
+
     }
-    
+    // Update Mic Button status Function
      func updateMicButtonStatus (show : Bool) {
         if show  /* mic  */{
             messageInputBar.setStackViewItems([micButton], forStack: .right, animated: false)
@@ -141,21 +165,20 @@ class MSGViewController: MessagesViewController {
             checkForOldMessages()
         }
         
-        
-        
+
         // OBserve(Listenr) To Firebase using Notification Token
         notificationToken = allLocalMessages.observe({ (change  : RealmCollectionChange ) in
             switch change {
             case .initial:
                 self.insertMKMessages()
                 self.messagesCollectionView.reloadData()
-                self.messagesCollectionView.scrollToBottom(animated: true)
+                self.messagesCollectionView.scrollToLastItem(animated: true)
   
             case .update(_, _, insertions: let insertions, _):
                 for index in insertions {
                     self.insertMKMessage(localMessage: self.allLocalMessages[index])
                     self.messagesCollectionView.reloadData()
-                    self.messagesCollectionView.scrollToBottom(animated: true)
+                    self.messagesCollectionView.scrollToLastItem(animated: true)
                 }
             case .error(let error):
                 print("error", error.localizedDescription)
@@ -171,16 +194,59 @@ class MSGViewController: MessagesViewController {
         let incoming = Incoming(messageViewController: self)
         let mkMessage = incoming.createMKMessage(localMessage: localMessage)
         mkMessages.append(mkMessage)
+        displayingMessageCount += 1
     }
+    
+    // this for insert message at the index 0 everytime
+    private func insertOlderMKMessage(localMessage : LocalMessage){
+        let incoming = Incoming(messageViewController: self)
+        let mkMessage = incoming.createMKMessage(localMessage: localMessage)
+        mkMessages.insert(mkMessage, at: 0)
+        displayingMessageCount += 1
+    }
+    
     
     // insert All Message
     private func insertMKMessages(){
+        // this for pull more messages refresh controller
+        maxMessageNumber = allLocalMessages.count - displayingMessageCount
+        minMessageNumber = maxMessageNumber - KMESSAGENUMBER
         
-        for localMessage in allLocalMessages {
-            insertMKMessage(localMessage: localMessage)
+        if minMessageNumber < 0 {
+            minMessageNumber = 0
         }
         
+        for i in minMessageNumber ..< maxMessageNumber {
+            insertMKMessage(localMessage: allLocalMessages[i])
+        }
+
     }
+    
+    private func insertMoreMKMessages(){
+        // this for pull more messages refresh controller
+        maxMessageNumber = minMessageNumber - 1
+        minMessageNumber = maxMessageNumber - KMESSAGENUMBER
+        
+        if minMessageNumber < 0 {
+            minMessageNumber = 0
+        }
+        
+        for i in (minMessageNumber ... maxMessageNumber).reversed() {
+            insertOlderMKMessage(localMessage: allLocalMessages[i])
+        }
+    }
+    
+    // Scroll Delegate Function (Refresh Controll) for Pull To Load More Messages
+     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if refreshController.isRefreshing {
+            if displayingMessageCount < allLocalMessages.count {
+                self.insertMoreMKMessages()
+                messagesCollectionView.reloadDataAndKeepOffset()
+            }
+        }
+        refreshController.endRefreshing()
+    }
+    
     
     //check for Old Messages if locall messages is empty
     func checkForOldMessages() {
@@ -198,8 +264,5 @@ class MSGViewController: MessagesViewController {
         
         return Calendar.current.date(byAdding: .second, value: 1 ,to: lastMessageDate) ?? lastMessageDate
     }
-    
-    
-    
-    
+
 }

@@ -29,7 +29,7 @@ extension MSGViewController : MessagesDataSource {
     func cellTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
    
         if indexPath.section % 3 == 0 {
-            let showLoadMore = false
+            let showLoadMore = (indexPath.section == 0) && (allLocalMessages.count > displayingMessageCount)
             let text = showLoadMore ? "Pull To Load More Messages"  : MessageKitDateFormatter.shared.string(from: message.sentDate)
        
             let font  =  showLoadMore ? UIFont.systemFont(ofSize: 13) : UIFont.boldSystemFont(ofSize: 10)
@@ -39,8 +39,7 @@ extension MSGViewController : MessagesDataSource {
             
         
         }
-        
-        
+   
         return nil
     }
     
