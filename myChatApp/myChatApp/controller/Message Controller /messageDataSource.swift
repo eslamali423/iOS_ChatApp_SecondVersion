@@ -28,9 +28,10 @@ extension MSGViewController : MessagesDataSource {
     // cell top label
     func cellTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
    
+   
         if indexPath.section % 3 == 0 {
             let showLoadMore = (indexPath.section == 0) && (allLocalMessages.count > displayingMessageCount)
-            let text = showLoadMore ? "Pull To Load More Messages"  : MessageKitDateFormatter.shared.string(from: message.sentDate)
+            let text = showLoadMore ? "Scroll Down To Load More Messages"  : MessageKitDateFormatter.shared.string(from: message.sentDate)
        
             let font  =  showLoadMore ? UIFont.systemFont(ofSize: 13) : UIFont.boldSystemFont(ofSize: 10)
             let color =  showLoadMore ? UIColor.systemBlue : UIColor.darkGray
@@ -47,18 +48,30 @@ extension MSGViewController : MessagesDataSource {
     // cell bottom label
     
     func cellBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
-        
-        if isFromCurrentSender(message: message) {
-            let message = mkMessages[indexPath.section]
-            let status = indexPath.section == mkMessages.count - 1 ? message.status + " " + MessageKitDateFormatter.shared.string(from: message.sentDate)  :  " "
+        let message = mkMessages[indexPath.section]
+        let font = UIFont.boldSystemFont(ofSize: 10)
+        let color =  UIColor.darkGray
+        var status = ""
+      
+        if indexPath.section == mkMessages.count - 1 {
+            status = MessageKitDateFormatter.shared.string(from: message.sentDate)
+            if isFromCurrentSender(message: message) {
+               status =  message.status + " " + MessageKitDateFormatter.shared.string(from: message.sentDate)
+            }
             
-            let font = UIFont.boldSystemFont(ofSize: 10)
-            let color =  UIColor.darkGray
-            return NSAttributedString(string: status, attributes: [.font : font, .foregroundColor : color])
         }
-        
-        return nil
+        return NSAttributedString(string: status, attributes: [.font : font, .foregroundColor : color])
     }
+            
+       
+    
+        
+        
+       
+        
+        
+     
+    
     
     // this function to set time for every message
     // message bottom label
