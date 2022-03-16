@@ -134,7 +134,41 @@ class StorageManager  {
             let progress =  snapshot.progress!.completedUnitCount / snapshot.progress!.totalUnitCount
             ProgressHUD.showProgress(CGFloat(progress))
         }
-    }// func uploadImage
+    }// func uploadVideo
+    
+    //MARK:- Download Videw
+    func downloadVideo(videoUrl :  String, completion : @escaping ( _ isReadyToPlay : Bool, _ videoFileName : String )->Void)  {
+        let videoFileName = fileNameFromUrl(fileUrl: videoUrl) + ".mov"
+        
+        if fileExistsInPath(path: videoFileName){
+           
+            completion(true, videoFileName)
+            
+                
+        }else  {
+            //  get the image form firebase
+            if videoUrl != "" {
+                let downloadUrl = URL(string: videoUrl )
+                let downloadQueue = DispatchQueue (label: "imageDownloadQueue")
+                
+                downloadQueue.async {
+                    let data =  NSData(contentsOf: downloadUrl!)
+                    if data != nil {
+                        // save the file locally
+                        StorageManager.shared.saveFileLocally(fileData: data!, fileName: videoFileName)
+                        DispatchQueue.main.async {
+                            completion(true, videoFileName)
+                        }
+                    }else {
+                        print(" no document Found in database ")
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    
     
 } // class storageManager
 
