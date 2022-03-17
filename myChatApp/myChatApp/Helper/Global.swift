@@ -8,6 +8,14 @@
 import Foundation
 import UIKit
 import AVFoundation
+import Firebase
+
+
+let usersRef = "Users"
+
+func firestoreReferance(_ ref : String) -> CollectionReference {
+   return Firestore.firestore().collection(ref)
+}
 
 
 func fileNameFromUrl(fileUrl : String) -> String {
@@ -34,7 +42,28 @@ func videoThumbnail (videoUrl : URL) ->  UIImage{
 return UIImage(named: "avatar")!
 }
 
-// Date Extension
+//MARK:- Calculate Date For Message
+func timeElapsed (date : Date) ->  String {
+    let seconds =  Date().timeIntervalSince(date)
+    var elapsed = ""
+    if seconds < 60 {
+        elapsed = "Just Now"
+    } else if seconds < 60 * 60 {
+        let minutes  =  Int(seconds/60)
+        let minText = minutes > 1 ? "minutes" : "minute"
+        elapsed = "\(minutes) \(minText)"
+    } else if seconds < 24 * 60 * 60 {
+        let hour  =  Int(seconds/(60 * 60))
+        let hourText = hour > 1 ? "hours" : "hour"
+        elapsed = "\(hour) \(hourText)"
+    } else  {
+        elapsed = "\(date.longDate())"
+    }
+    return elapsed 
+}
+
+
+//MARK:- Date Extension
 extension Date {
     
     func longDate() -> String {

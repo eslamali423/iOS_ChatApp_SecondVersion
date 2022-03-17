@@ -56,7 +56,7 @@ class ChatsTableViewController: UITableViewController {
         return 90
     }
     
-    // This for Deleting Chat Room Form The Tabel
+    // This 2 Fucntions for Deleting Chat Room Form The TabelView
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
@@ -67,12 +67,10 @@ class ChatsTableViewController: UITableViewController {
             
             searchController.isActive ? self.filterdChatRooms.remove(at: indexPath.row) : allChatRooms.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
-            
-
-        
+  
         }
     }
-    
+    // Did Tap On a Chat Room
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let chatRoomObject = searchController.isActive ? filterdChatRooms[indexPath.row] : allChatRooms[indexPath.row]
         goToMessageController(chatRoom: chatRoomObject)

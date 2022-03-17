@@ -6,15 +6,9 @@
 //
 
 import Foundation
-import Firebase
-
- let usersRef = "Users"
 
 
 
-func firestoreReferance(_ ref : String) -> CollectionReference {
-    return Firestore.firestore().collection(ref)
-}
 
 
 

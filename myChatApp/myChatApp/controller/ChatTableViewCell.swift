@@ -42,7 +42,8 @@ class ChatTableViewCell: UITableViewCell {
     func configure(chatRoom : ChatRoom)  {
         self.lastMessageLabel.text =  chatRoom.lastMessage
         self.usernameLabel.text =  chatRoom.receiverName
-        self.dateLabel.text = "\(MessageKitDateFormatter.shared.string(from: chatRoom.date!))"
+        self.dateLabel.text = timeElapsed(date: chatRoom.date ?? Date())
+            //"\(MessageKitDateFormatter.shared.string(from: chatRoom.date!))"
       
         if chatRoom.unReadCounter != 0 {
             self.unReadView.isHidden = false

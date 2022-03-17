@@ -67,7 +67,7 @@ func createChatRoom(chatRoomID : String, users : [User])  {
                 
                 let id = "\(senderUser.id)" + "\(receiverUser.id)"
                 // UUID().uuidString
-                let chatRoomObject = ChatRoom(id: id, chatRoomId: chatRoomID, senderId: senderUser.id, receiverId: receiverUser.id, receiverName: receiverUser.username, lastMessage: "last", date: Date(), unReadCounter: 0, avatarLink: receiverUser.avatarLink, memberIds: [senderUser.id, receiverUser.id])
+                let chatRoomObject = ChatRoom(id: id, chatRoomId: chatRoomID, senderId: senderUser.id, receiverId: receiverUser.id, receiverName: receiverUser.username, lastMessage: "", date: Date(), unReadCounter: 0, avatarLink: receiverUser.avatarLink, memberIds: [senderUser.id, receiverUser.id])
                 
                 
                 // TODO Save chat Room in firestore
