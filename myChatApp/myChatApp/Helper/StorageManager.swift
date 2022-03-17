@@ -149,7 +149,7 @@ class StorageManager  {
             //  get the image form firebase
             if videoUrl != "" {
                 let downloadUrl = URL(string: videoUrl )
-                let downloadQueue = DispatchQueue (label: "imageDownloadQueue")
+                let downloadQueue = DispatchQueue (label: "videoDownloadQueue")
                 
                 downloadQueue.async {
                     let data =  NSData(contentsOf: downloadUrl!)
@@ -158,6 +158,89 @@ class StorageManager  {
                         StorageManager.shared.saveFileLocally(fileData: data!, fileName: videoFileName)
                         DispatchQueue.main.async {
                             completion(true, videoFileName)
+                        }
+                    }else {
+                        print(" no document Found in database ")
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    //MARK:- Upload Audio to Firestore
+    func uploadAudio(AudioFileName  : String, directory : String, completion : @escaping ( _ audioLink : String?)-> Void)  {
+      
+        // create Audio File Name
+        let fileName = AudioFileName + ".m4a"
+        
+        
+        // create folder in firestore
+        let storageRef = Storage.storage().reference(forURL: storageRefDirectory).child(directory)
+        
+        // put data into firestore and return the downloaded link
+        if fileExistsInPath(path: fileName) {
+            
+            if let audioData = NSData(contentsOfFile: fileInDocumentDirectory(fileName: fileName)) {
+                
+                
+                var task : StorageUploadTask!
+                task = storageRef.putData(audioData as Data, metadata: nil, completion: { (data, error) in
+                    task.removeAllObservers()
+                    ProgressHUD.dismiss()
+           
+                    if error != nil {
+                        print("Error Uploading Audio .....")
+                        print (error?.localizedDescription)
+                        
+                        return
+                    }
+                    storageRef.downloadURL { (url, error) in
+                        guard let downloadUrl =  url , error == nil else  {
+                            print (error?.localizedDescription)
+                            completion(nil)
+                            return
+                        }
+                        completion(downloadUrl.absoluteString)
+                        
+                    }
+                })
+                
+                //observe upload persantage
+                task.observe(StorageTaskStatus.progress) { (snapshot) in
+                    // to get the persantage % for uploading progress
+                    let progress =  snapshot.progress!.completedUnitCount / snapshot.progress!.totalUnitCount
+                    ProgressHUD.showProgress(CGFloat(progress))
+                }
+            }else  {
+                print("Audio Data Not Uploaded Successfully")
+            }
+            
+        }
+    }// func uploadAudio
+    
+    //MARK:- Download Videw
+    func downloadAudio(audioUrl :  String, completion : @escaping ( _ audioFileName : String )->Void)  {
+        let audioFileName = fileNameFromUrl(fileUrl: audioUrl) + ".m4a"
+        
+        if fileExistsInPath(path: audioFileName){
+           
+            completion( audioFileName)
+            
+                
+        }else  {
+            //  get the image form firebase
+            if audioUrl != "" {
+                let downloadUrl = URL(string: audioUrl )
+                let downloadQueue = DispatchQueue (label: "audioDownloadQueue")
+                
+                downloadQueue.async {
+                    let data =  NSData(contentsOf: downloadUrl!)
+                    if data != nil {
+                        // save the file locally
+                        StorageManager.shared.saveFileLocally(fileData: data!, fileName: audioFileName)
+                        DispatchQueue.main.async {
+                            completion(audioFileName)
                         }
                     }else {
                         print(" no document Found in database ")

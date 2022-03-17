@@ -20,11 +20,11 @@ struct MKMessage :  MessageType {
     }
     
     var senderInitials : String //  if user does'nt have avatar put fist letter form his name
+   
     var photoItem  : PhotoMessage?
-    
     var videoItem  : VideoMessage?
-    
     var locationItem :LocationMessage?
+    var audioItem  : AudioMessage?
     
     var status : String
     var readDate : Date
@@ -56,7 +56,12 @@ struct MKMessage :  MessageType {
             let locationItem = LocationMessage(location: CLLocation(latitude: message.locationLatitude, longitude: message.locationLongitude))
             self.kind = MessageKind.location(locationItem)
             self.locationItem    = locationItem
+        case KAUDIO:
+            let audioItem = AudioMessage(duration: 0.2)
+            self.kind = MessageKind.audio(audioItem)
+            self.audioItem = audioItem
         default:
+            self.kind = MessageKind.text(message.message)
             print("Unkonwn Error ")
         }
         
