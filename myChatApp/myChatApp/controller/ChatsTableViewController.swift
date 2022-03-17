@@ -11,6 +11,9 @@ import Firebase
 class ChatsTableViewController: UITableViewController {
     
     //MARK:- vars
+  
+    // requested chatrooms to all chat Rooms 
+    
     
     var allChatRooms : [ChatRoom] = []
     var filterdChatRooms : [ChatRoom] = []

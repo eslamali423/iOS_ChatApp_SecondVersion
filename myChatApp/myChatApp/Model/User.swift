@@ -47,7 +47,7 @@ func == (lhs : User, rhs : User) -> Bool{
 func saveUserLocally(_ user : User) {
     do{
         let data = try  JSONEncoder().encode(user)
-        UserDefaults.standard.set(data, forKey: "currentUser")
+        UserDefaults.standard.set(data, forKey: KCURRENTUSER)
         
     }catch {
         print(error.localizedDescription)

@@ -21,6 +21,7 @@ class MSGViewController: MessagesViewController {
     var receiverId = ""
     var receiverName = ""
     let refreshController = UIRefreshControl()
+   
     let micButton  = InputBarButtonItem()
     
     let currentUser = MKSender(senderId : User.currentID , displayName : User.currentUser!.username)
@@ -41,6 +42,8 @@ class MSGViewController: MessagesViewController {
     var  audioFileName :String = ""
     var  audioStartTime : Date = Date()
 
+    open lazy var audioController = BasicAudioController(messageCollectionView: messagesCollectionView)
+    
     
     //MARK:- Initializer
     

@@ -48,7 +48,7 @@ class UserManager {
         Auth.auth().signIn(withEmail: email, password: password) { (authResult, error) in
             if error == nil && authResult!.user.isEmailVerified  {
             completion(error,true)
-                self.downloadUserFormFirestore(userID: authResult!.user.uid)
+                //self.downloadUserFormFirestore(userID: authResult!.user.uid)
 
             }else {
                 print("something went worng by login ")
@@ -107,23 +107,24 @@ class UserManager {
     
     //MARK:- Did Tap Logout Button
 
-    public func signOut (completion : (_ error : Error?) -> Void){
+    public func signOut (completion : @escaping (_ error : Error?) -> Void){
             do{
                 try Auth.auth().signOut()
-                let domain = Bundle.main.bundleIdentifier!
-                UserDefaults.standard.removePersistentDomain(forName: domain)
-                UserDefaults.standard.removeObject(forKey: "currentUser")
+                UserDefaults.standard.removeObject(forKey: KCURRENTUSER)
                 UserDefaults.standard.synchronize()
+                
 
                 completion(nil)
                 print("data remove form userdefualts ")
             }
-            catch {
-            print("Error in sign out")
-                completion(error)
+            catch let error as NSError {
+                    completion(error)
+                print("Error SignOut" , error.localizedDescription)
+                }
             }
+            
  
-    }
+    
     
     //MARK:- Download Users Using Ids
     func downloadAllUsersFromFirestireUsingIds( _ memberIds : [String], completion : @escaping (_ allUsers : [User])->Void)  {
@@ -160,6 +161,7 @@ class UserManager {
                 return try? snapshot.data(as: User.self)
             }
             for user in allUsers {
+               
                 if User.currentID != user.id {
                     users.append(user)
                     

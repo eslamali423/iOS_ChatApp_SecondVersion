@@ -30,7 +30,7 @@ class ChatRoomManager {
     //MARK:- Download All Chat Rooms Form Firestore
     // there is a problem here when you sign out because userid not found
     func donwloadChatRooms(completion : @escaping (_ allChatRooms : [ChatRoom])->Void) {
-       
+        
         firestoreReferance("Chats").whereField("senderId", isEqualTo: User.currentID).addSnapshotListener { (snapshot, error) in
             var chatRooms : [ChatRoom] = []
 
@@ -71,6 +71,7 @@ class ChatRoomManager {
     
     // Reset Unread Counter using Chatroom ID
     func clearUnreadCounterWithId(chatRoomId : String) {
+        
         firestoreReferance("Chats").whereField(KCHATROOMID, isEqualTo: chatRoomId).whereField(KSENDERID, isEqualTo: User.currentID).getDocuments { (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else {
                 return
@@ -87,6 +88,7 @@ class ChatRoomManager {
     // update Chatroom with new message
     func updateChatRoomWithNewMessage(chatRoom : ChatRoom, lastMessage : String) {
         var tempChatRoom = chatRoom
+      
         if tempChatRoom.senderId != User.currentID {
             tempChatRoom.unReadCounter += 1
         }

@@ -62,6 +62,7 @@ func createChatRoom(chatRoomID : String, users : [User])  {
             }
             
             for userId in usersToCreateChatRoom {
+               
                 let senderUser = userId == User.currentID ? User.currentUser! : getReceiverID(users: users)
                 let receiverUser = userId == User.currentID ? getReceiverID(users: users) : User.currentUser!
                 

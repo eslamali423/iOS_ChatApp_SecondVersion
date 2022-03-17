@@ -11,7 +11,7 @@ class ContainerViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        selectedIndex = 2
+        selectedIndex = 0
         
     
     }
