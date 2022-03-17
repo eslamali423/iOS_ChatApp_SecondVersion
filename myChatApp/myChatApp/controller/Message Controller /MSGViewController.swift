@@ -16,6 +16,7 @@ class MSGViewController: MessagesViewController {
     
     //MARK:- vars
     
+    
     var chatId = ""
     var receiverId = ""
     var receiverName = ""
@@ -34,6 +35,12 @@ class MSGViewController: MessagesViewController {
     var minMessageNumber = 0
     
     var gallery : GalleryController!
+    
+    var longPressGesture : UILongPressGestureRecognizer!
+    
+    var  audioFileName :String = ""
+    var  audioStartTime : Date = Date()
+
     
     //MARK:- Initializer
     
@@ -55,6 +62,7 @@ class MSGViewController: MessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureGestureRecognizer()
         configureMessageCollectionView()
         configureMessageInputBar()
         loadMessages()
@@ -177,12 +185,13 @@ class MSGViewController: MessagesViewController {
         // add items to messageInputBar stalkView
         messageInputBar.setStackViewItems([attachButton], forStack: .left, animated: false)
         messageInputBar.setLeftStackViewWidthConstant(to: 36, animated: false)
-   
+        
+        
         micButton.image = UIImage(systemName: "mic.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
         micButton.setSize(CGSize(width: 30, height: 30), animated: false)
-        
+    
         // add gesture recognizer
-        
+        micButton.addGestureRecognizer(longPressGesture)
        
         // update mic status
         // true at first because textView doesn't has text (mic shows up)
@@ -192,6 +201,7 @@ class MSGViewController: MessagesViewController {
     // Update Mic Button status Function
      func updateMicButtonStatus (show : Bool) {
         if show  /* mic  */{
+            
             messageInputBar.setStackViewItems([micButton], forStack: .right, animated: false)
             messageInputBar.setRightStackViewWidthConstant(to: 36, animated: false)
             
@@ -200,6 +210,43 @@ class MSGViewController: MessagesViewController {
             messageInputBar.setRightStackViewWidthConstant(to: 55, animated: false)
         }
         
+        
+    }
+    
+    //MARK:- Configure Long Press Gesture For Mic Button
+    func configureGestureRecognizer()  {
+        longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(recordAndSend))
+    }
+    
+    @objc func recordAndSend () {
+        switch longPressGesture.state {
+        case .began:
+            // start Recording
+            audioFileName  = Date().stringDate()
+            audioStartTime = Date()
+            AudioManager.shared.startRecording(fileName: audioFileName)
+        
+        
+        
+        
+        case .ended :
+            // stop Recording
+            AudioManager.shared.finishRecording()
+            if fileExistsInPath(path: audioFileName + ".m4a") {
+                let audioDuration = audioStartTime.interval(comp: .second, date: Date())
+                
+                send(text: nil, photo: nil, video: nil, audio: audioFileName, location: nil, audioDuration: audioDuration)
+            }
+             
+            
+            
+            // send the audio Message
+            print("end and send ")
+
+            
+         default:
+            print("unknown")
+        }
         
     }
     
