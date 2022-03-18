@@ -62,15 +62,9 @@ extension MSGViewController : MessagesDataSource {
         }
         return NSAttributedString(string: status, attributes: [.font : font, .foregroundColor : color])
     }
-            
-       
+
     
-        
-        
-       
-        
-        
-     
+    
     
     
     // this function to set time for every message

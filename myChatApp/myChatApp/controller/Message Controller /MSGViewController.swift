@@ -172,7 +172,10 @@ class MSGViewController: MessagesViewController {
         messageInputBar.inputTextView.isImagePasteEnabled =  false
         messageInputBar.backgroundView.backgroundColor = .systemBackground
         messageInputBar.inputTextView.backgroundColor = .systemBackground
-
+        
+        messageInputBar.sendButton.image = UIImage (named: "sendButton")
+        messageInputBar.sendButton.title = ""
+        messageInputBar.sendButton.setSize(CGSize(width: 30, height: 30), animated: false)
         
         
         //        messageInputBar.delegate = self
