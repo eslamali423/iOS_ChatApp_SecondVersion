@@ -22,6 +22,9 @@ extension MSGViewController : MessagesDisplayDelegate {
         let incomingBubble = UIColor(named: "colorIncomingBubble")
         let outgoingBubble = UIColor(named: "colorOutGoingBubble")
         
+      
+      
+        
         return isFromCurrentSender(message: message) ? outgoingBubble as! UIColor : incomingBubble as! UIColor
         
     }

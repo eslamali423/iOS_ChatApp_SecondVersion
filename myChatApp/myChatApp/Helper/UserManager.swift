@@ -22,24 +22,24 @@ class UserManager {
     //MARK:- registration function with email and password
     func registration(email : String, password :  String, completion: @escaping (_ error : Error?)-> Void )  {
         Auth.auth().createUser(withEmail: email, password: password) { (results, error) in
-            guard error == nil else  {
-                print("something went worng....")
-                print(error?.localizedDescription)
-                completion(error)
-                return
-            }
+         
+            completion(error)
+            
+            if error == nil {
             results?.user.sendEmailVerification(completion: { (error) in
                 print(error?.localizedDescription)
+            
             })
             
             if results?.user != nil {
                 let user =  User(id: results!.user.uid, username: email, email: email, pushID: "", avatarLink: "", status: "hey i'm using this chat App ")
                 self.saveUserToFirestore(user: user)
-              //  saveUserLocally(user)
+                saveUserLocally(user)
             }
             
              
         }
+    }
     }
 
     
@@ -48,7 +48,7 @@ class UserManager {
         Auth.auth().signIn(withEmail: email, password: password) { (authResult, error) in
             if error == nil && authResult!.user.isEmailVerified  {
             completion(error,true)
-                //self.downloadUserFormFirestore(userID: authResult!.user.uid)
+                self.downloadUserFormFirestore(userID: authResult!.user.uid)
 
             }else {
                 print("something went worng by login ")
@@ -61,17 +61,17 @@ class UserManager {
     //MARK:- uploade user data to firestore database after registration statment
     func saveUserToFirestore(user: User)  {
         do {
-            try  firestoreReferance("Users").document(user.id).setData(from: user)
+            try  firestoreReferance(.Users).document(user.id).setData(from: user)
 
         }catch {
-            
+            print("Error Login" , error.localizedDescription)
         }
     }
     
     
     //MARK:- download user data form firestore database after login statment
     func downloadUserFormFirestore(userID : String)  {
-        firestoreReferance("Users").document(userID).getDocument { (documentResult, error) in
+        firestoreReferance(.Users).document(userID).getDocument { (documentResult, error) in
             guard let document = documentResult else {
                 print("no data Found")
                 print(error?.localizedDescription)
@@ -132,7 +132,7 @@ class UserManager {
         var usersArray : [User] = []
         
         for userId in memberIds {
-            firestoreReferance("Users").document(userId).getDocument { (allUsersSnapshot, error) in
+            firestoreReferance(.Users).document(userId).getDocument { (allUsersSnapshot, error) in
                 guard let document = allUsersSnapshot else {
                     return
                 }
@@ -151,7 +151,7 @@ class UserManager {
     //MARK:- Download All Users form Firestore to explore viewController
     func downloadAllUsersFormFirestore(completion : @escaping ( _ allUsers : [User]) -> Void ) {
         var users : [User] = []
-        firestoreReferance("Users").getDocuments { (snapshot, error) in
+        firestoreReferance(.Users).getDocuments { (snapshot, error) in
             guard let documents = snapshot?.documents , error == nil else {
                 print ("no data found in download all users function")
                 return

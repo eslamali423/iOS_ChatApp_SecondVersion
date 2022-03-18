@@ -24,7 +24,7 @@ struct User : Codable, Equatable {
     
     static var currentUser : User? {
         if Auth.auth().currentUser != nil {  
-            if let data =  UserDefaults.standard.data(forKey: "currentUser")  {
+            if let data =  UserDefaults.standard.data(forKey: KCURRENTUSER)  {
                 do {
                     let userObject = try JSONDecoder().decode(User.self, from: data)
                     return userObject

@@ -19,7 +19,7 @@ class ChatRoomManager {
     func saveChatRoomToFirestore(chatRoom : ChatRoom) {
        
         do  {
-            try firestoreReferance("Chats").document(chatRoom.id).setData(from: chatRoom)
+            try firestoreReferance(.Chats).document(chatRoom.id).setData(from: chatRoom)
 
         }catch {
             print("Error in Saving data in Firestore " , error.localizedDescription)
@@ -31,7 +31,7 @@ class ChatRoomManager {
     // there is a problem here when you sign out because userid not found
     func donwloadChatRooms(completion : @escaping (_ allChatRooms : [ChatRoom])->Void) {
         
-        firestoreReferance("Chats").whereField("senderId", isEqualTo: User.currentID).addSnapshotListener { (snapshot, error) in
+        firestoreReferance(.Chats).whereField("senderId", isEqualTo: User.currentID).addSnapshotListener { (snapshot, error) in
             var chatRooms : [ChatRoom] = []
 
             guard let document = snapshot?.documents else  {
@@ -57,7 +57,7 @@ class ChatRoomManager {
     
     //MARK:- Delete Chat Room Form The Table
     func deleteChatRoom( _ chatRoom : ChatRoom) {
-        firestoreReferance("Chats").document(chatRoom.id).delete()
+        firestoreReferance(.Chats).document(chatRoom.id).delete()
     }
     
     
@@ -72,7 +72,7 @@ class ChatRoomManager {
     // Reset Unread Counter using Chatroom ID
     func clearUnreadCounterWithId(chatRoomId : String) {
         
-        firestoreReferance("Chats").whereField(KCHATROOMID, isEqualTo: chatRoomId).whereField(KSENDERID, isEqualTo: User.currentID).getDocuments { (querySnapshot, error) in
+        firestoreReferance(.Chats).whereField(KCHATROOMID, isEqualTo: chatRoomId).whereField(KSENDERID, isEqualTo: User.currentID).getDocuments { (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else {
                 return
             }
@@ -101,7 +101,7 @@ class ChatRoomManager {
     
     // update Chatrooms  for sender and receiver
     func updateChatRooms(chatRoomId : String, lastMessage : String)  {
-        firestoreReferance("Chats").whereField(KCHATROOMID, isEqualTo: chatRoomId).getDocuments { (querySnapshot, error) in
+        firestoreReferance(.Chats).whereField(KCHATROOMID, isEqualTo: chatRoomId).getDocuments { (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else  {return}
             
             let allChatRooms = documents.compactMap { (querySnapshot) -> ChatRoom? in

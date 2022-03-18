@@ -61,6 +61,7 @@ class LoginViewController: UIViewController {
                     if isEmailVerified {
                         print("go to app")
                         self.dismiss(animated: true, completion: nil)
+                        
                     }else {
                         ProgressHUD.showError("Please check your Emial and varify your account to confirm Registration")
                     }

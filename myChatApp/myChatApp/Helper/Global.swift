@@ -11,10 +11,17 @@ import AVFoundation
 import Firebase
 
 
-let usersRef = "Users"
+//MARK:- Firebase Referance
 
-func firestoreReferance(_ ref : String) -> CollectionReference {
-   return Firestore.firestore().collection(ref)
+enum FirebaseReferanceKey :String {
+    case Users
+    case Messages
+    case Chats
+}
+
+
+func firestoreReferance(_ ref : FirebaseReferanceKey) -> CollectionReference {
+    return Firestore.firestore().collection(ref.rawValue)
 }
 
 
@@ -25,7 +32,7 @@ func fileNameFromUrl(fileUrl : String) -> String {
     return name2!
 }
 
-
+//MARK:- Video Thubnail
 // this function create Thumbnail Image for Videos
 func videoThumbnail (videoUrl : URL) ->  UIImage{
     do {

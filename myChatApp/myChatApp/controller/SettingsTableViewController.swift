@@ -22,7 +22,7 @@ class SettingsTableViewController: UITableViewController {
         super.viewDidLoad()
         
         // to set navigartion controller item without set title for the tabBar item
-        navigationController?.navigationBar.topItem?.title = "Settings"
+      //  navigationController?.navigationBar.topItem?.title = "Settings"
         // to hide Empty cells in the tableview
         tableView.tableFooterView = UIView()
         self.tabBarController?.tabBar.isHidden = false
@@ -115,9 +115,6 @@ class SettingsTableViewController: UITableViewController {
         }
         usernameLabel.text = user.username
         statusLabel.text = user.status
-        
-        
-        
         
             if user.avatarLink != "" {
          // download user profile image locally

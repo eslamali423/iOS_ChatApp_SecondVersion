@@ -12,14 +12,16 @@ import Firebase
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    var authListner : AuthStateDidChangeListenerHandle?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+        handelAuthentcation_2()
         guard let _ = (scene as? UIWindowScene) else { return }
         
-        handelAuthentcation()
+       
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -71,15 +73,42 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
         }
     }
+    
+    private func handelAuthentcation_2(){
+        authListner = Auth.auth().addStateDidChangeListener({ (auth, user) in
+            Auth.auth().removeStateDidChangeListener(self.authListner!)
+            if user == nil && UserDefaults.standard.object(forKey: KCURRENTUSER) == nil {
+                self.goToLoginViewController()
+            }
+        })
+    }
    
+    private func goToApp () {
+        let tapBarVC = UIStoryboard (name: "Main", bundle: nil).instantiateViewController(identifier: "ContainerViewController") as! ContainerViewController
+        tapBarVC.modalPresentationStyle = .fullScreen
+        
+        
+                 self.window?.rootViewController = tapBarVC
+
+    }
+    
+ 
+    
+    
     //MARK:- Navigation To Login View Controller
     func goToLoginViewController()  {
         let loginVC = UIStoryboard (name: "Main", bundle: nil).instantiateViewController(identifier: "LoginViewController") as! LoginViewController
 
         loginVC.modalPresentationStyle = .fullScreen
+                 self.window?.rootViewController = loginVC
+                 self.window?.makeKeyAndVisible()
         
-        self.window?.rootViewController = loginVC
-      //  present(loginVC, animated: false, completion: nil)
+        
+        //  present(loginVC, animated: false, completion: nil)
+    
+        
+        
+    
     }
 
 
